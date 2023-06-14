@@ -1,0 +1,34 @@
+[
+  {
+    "model": "account.account",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$AwEpqxD3Jrw7F6hFuctobe$lNKCG14RCV/cwF3PzV/ghqI8wNkxgjVzZZNmAhE80wY=",
+      "last_login": "2021-11-01T10:11:04.296Z",
+      "is_superuser": true,
+      "external_id": null,
+      "code": null,
+      "sol_public_key": null,
+      "username": "sysadmin",
+      "email": null,
+      "first_name": "",
+      "last_name": "",
+      "image": "",
+      "type": 1,
+      "language": "en",
+      "is_admin": true,
+      "is_force_reset_password": false,
+      "phone": null,
+      "is_verified_email": false,
+      "extra": "{}",
+      "facebook_user_id": "",
+      "google_user_id": "",
+      "apple_user_id": "",
+      "is_active": true,
+      "is_accepted_active_consent": true,
+      "datetime_update": "2021-10-28T10:52:47.884Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "model": "news_update.newsupdatelog",
+    "pk": 1,
+    "fields": {
+      "news_update": 1,
+      "account": 1,
+      "is_read": true
+    }
+  }
+]

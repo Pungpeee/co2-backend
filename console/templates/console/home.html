@@ -1,0 +1,129 @@
+{% extends "console/base.html" %}
+
+<!--
+    Code Color
+    1. #8f0532
+    2. #db4557
+    3. #fe7d7d
+    4. #ff97ba
+    5. #b74789
+    6. #9150b9
+    7. #a081b4
+    8. #7c8fdc
+    9. #3d8aba
+    10. #344563
+    11. #4b4b4b
+    12. #849c9d
+    13. #549080
+    14. #37b276
+    15. #266e17
+    16. #8da735
+    17. #e5d955
+    18. #f7b024 Font: #4a4a4a
+    19. #e36d00
+    20. #7f3600
+-->
+
+{% block content %}
+    <p class="text-left">Backend : {% if version.HRD_API != '0' %}{{ version.HRD_API }}{% else %}-{% endif %}</p>
+    <p class="text-left">Web : {% if version.HRD_WEB != '0' %}{{ version.HRD_WEB }}{% else %}-{% endif %} |  Dashboard : {% if version.HRD_DASHBOARD != '0' %}{{ version.HRD_DASHBOARD }}{% else %}-{% endif %}</p>
+    <p class="text-left">Android : {% if version.HRD_ANDROID != '0' %}{{ version.HRD_ANDROID }}{% else %}-{% endif %} |  iOS : {% if version.HRD_IOS != '0' %}{{ version.HRD_IOS }}{% else %}-{% endif %}</p>
+    <hr/>
+<!--    <a href="?permission=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">Update Permission</a>-->
+<!--    <a href="?dict=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">Update Dict</a>-->
+<!--    <a href="?config=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">Update Config</a>-->
+<!--    <a href="?init_user=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">Init User</a>-->
+<!--    <a href="?clear-user-session=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">Clear Session Force Password</a>-->
+<!--    <a href="?celery_export=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">celery-export!</a>-->
+<!--    <a href="?celery_import=True" class="btn" style="color: #ffffff; background-color: #8f0532; border-color: #8f0532;">celery-import!</a> <br/><br/><hr/>-->
+<!--    <span> Restart Backend Mode </span>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?uwsgi=True"  class="btn btn-danger">Clear Runtime</a><br/><br/>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-restart=True"   class="btn btn-danger">Restart (Graceful) Celery Worker All</a><br/><br/>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-user=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "user@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-user-priority=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "user-priority@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-dashboard=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "dashboard@api-service"</a><br/><br/>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-encode=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "encode@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-export=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "export@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-config=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "config@api-service"</a><br/><br/>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-permission=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "permission@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-check-live-status=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "check_live_status@api-service"</a>-->
+<!--    <a onclick="return confirm('Are you sure?')" href="?celery-broadcast-learner=True" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;" class="btn btn-outline-warning" >Restart Celery "broadcast_learner@api-service"</a>-->
+<!--    <hr/>-->
+<!--    <a href="?account-update=True" class="btn" style="color: #ffffff; background-color: #db4557; border-color: #db4557;">Update Account (supervisor, department, position, level)</a>-->
+<!--    <a href="?account-redis-update=True" class="btn" style="color: #ffffff; background-color: #db4557; border-color: #db4557;">Update Account Cached (Redis)</a>-->
+<!--    <a href="?department_update=True" class="btn" style="color: #ffffff; background-color: #db4557; border-color: #db4557;">Update department structure</a>-->
+<!--    <a href="?admin_dashboard_update=True" class="btn" style="color: #ffffff; background-color: #db4557; border-color: #db4557;">Update Admin Dashboard</a>-->
+<!--    <a href="?script_admin_dashboard_update=True" class="btn" style="color: #ffffff; background-color: #db4557; border-color: #db4557;">Run Script init. data Admin Dashboard</a>-->
+<!--    <hr/>-->
+<!--    <a href="?course-section-number=True" class="btn" style="color:#ffffff; background-color:#fe7d7d; border-color: #fe7d7d;">Update Course Section Number</a>-->
+<!--    <a href="?course-slot-sort=True" class="btn" style="color:#ffffff; background-color:#fe7d7d; border-color: #fe7d7d;">Update Course Slot Sort</a>-->
+<!--    <a href="?fix-update-review-score=True" class="btn" style="color:#ffffff; background-color:#fe7d7d; border-color: #fe7d7d;">Fix & Update Course Review Score</a>-->
+<!--    <hr/>-->
+<!--    <a href="?messenger=True" class="btn" style="color: #ffffff; background-color: #ff97ba; border-color: #ff97ba;">Update Messenger Room</a>-->
+<!--    <a href="?course_messenger=True" class="btn" style="color: #ffffff; background-color: #ff97ba; border-color: #ff97ba;">Update Course Messenger Room</a>-->
+<!--    <a href="?onboard_messenger=True" class="btn" style="color: #ffffff; background-color: #ff97ba; border-color: #ff97ba;">Update Onboard Messenger Room</a>-->
+<!--    <a href="?learning_path_messenger=True" class="btn" style="color: #ffffff; background-color: #ff97ba; border-color: #ff97ba;">Update Learning Path Messenger Room</a>-->
+<!--    <br/><br/>-->
+<!--    <a href="?event_messenger=True" class="btn" style="color: #ffffff; background-color: #b74789; border-color: #b74789;">Update Event Messenger Room</a>-->
+<!--    <a href="?activity_messenger=True" class="btn" style="color: #ffffff; background-color: #b74789; border-color: #b74789;">Update Activity Messenger Room</a>-->
+<!--    <hr/>-->
+
+<!--    <a href="?progress-account-content-type=True" class="btn" style="color: #ffffff; background-color: #9150b9; border-color: #9150b9;">Update All ProgressAccountContentType</a>-->
+<!--    <a href="?progress-account-content-type=True" class="btn" style="color: #ffffff; background-color: #9150b9; border-color: #9150b9;">Update ProgressContent Course</a>-->
+<!--    <br/><br/>-->
+<!--    <a href="?fix-duration-progress=True" class="btn" style="color: #ffffff; background-color: #9150b9; border-color: #9150b9;">Fix Duration in Progress</a>-->
+<!--    <a href="?fix-count-success=True" class="btn" style="color: #ffffff; background-color: #9150b9; border-color: #9150b9;">Fix Count Success</a>-->
+<!--    <a href="?fix-om-file-path=True" class="btn" style="color: #ffffff; background-color: #9150b9; border-color: #9150b9;">Fix OM File Path</a>-->
+<!--    {#  <a href="" class="btn" style="color: #ffffff; background-color: #a081b4; border-color: #a081b4;"></a> #}-->
+<!--    <hr/>-->
+
+<!--    <a href="?progress-instructor-init=True" class="btn" style="color:#ffffff; background-color:#7c8fdc; border-color: #7c8fdc;">Progress Instructor - Init</a>-->
+<!--    <a href="?progress-survey-fix=True" class="btn" style="color:#ffffff; background-color:#7c8fdc; border-color: #7c8fdc;">Fix Progress Survey</a>-->
+<!--    <a href="?task_delete_duplicate_progress_account=True" class="btn" style="color:#ffffff; background-color:#7c8fdc; border-color: #7c8fdc;">Fix Progress Account Duplicate</a>-->
+<!--    <a href="?progress-onboard-update=True" class="btn" style="color:#ffffff; background-color:#7c8fdc; border-color: #7c8fdc;">Update Progress Onboard</a>-->
+<!--    <a href="?progress-survey-rating-set-value=True" class="btn" style="color:#ffffff; background-color:#7c8fdc; border-color: #7c8fdc;">Surver rating update set min-max</a>-->
+<!--    <hr/>-->
+<!--    <a href="?live-config-init=True" class="btn" style="color:#ffffff; background-color:#3d8aba; border-color: #3d8aba;">Live config - Init</a>-->
+<!--    <a href="?live-local-config-init=True" class="btn" style="color:#ffffff; background-color:#3d8aba; border-color: #3d8aba;">Live Local config - Init</a>-->
+<!--    <a href="?live-music-config-init=True" class="btn" style="color:#ffffff; background-color:#3d8aba; border-color: #3d8aba;">Live Music config - Init</a>-->
+<!--    <a href="?periodic-task-init=True" class="btn" style="color:#ffffff; background-color:#3d8aba; border-color: #3d8aba;">Periodic Task - Init</a>-->
+<!--    <hr/>-->
+<!--    <a href="?check-progress-exam=True" class="btn" style="color:#ffffff; background-color:#344563; border-color: #344563;">Check Progress Exam</a>-->
+<!--    <hr/>-->
+<!--    <a href="?init-content-count-account=True" class="btn" style="color:#ffffff; background-color:#4b4b4b; border-color: #4b4b4b;">Init Content Count by Account</a>-->
+<!--    <hr/>-->
+<!--    <a href="?fix-transaction-expire=True" class="btn" style="color:#ffffff; background-color:#849c9d; border-color: #849c9d;">Fix Transaction Expire</a>-->
+<!--    <a href="?fix-transaction-cancel-date=True" class="btn" style="color:#ffffff; background-color:#849c9d; border-color: #849c9d;">Fix Transaction Cancel Date</a>-->
+<!--    <hr/>-->
+<!--    <a href="?check-delete-content=True" class="btn" style="color:#ffffff; background-color:#549080; border-color: #549080;">Check Delete Content</a>-->
+<!--    <hr/>-->
+<!--    <a href="?content-location-update-apply-for=True" class="btn" style="color:#ffffff; background-color:#266e17; border-color: #266e17;">ContentLocation Update apply_for</a>-->
+<!--    <hr/>-->
+<!--    <a href="?fix-log=True" class="btn" style="color:#ffffff; background-color:#8da735; border-color: #8da735;">Fix Log</a>-->
+<!--    <hr/>-->
+<!--    <a href="?progress-course-check-complete-date=True" class="btn" style="color:#ffffff; background-color:#e5d955; border-color: #e5d955;">Progress Course Check Complete Date</a>-->
+<!--    <a href="?progress-course-check-equal-transaction=True" class="btn" style="color:#ffffff; background-color:#e5d955; border-color: #e5d955;">Progress Course Check Equal Transaction</a>-->
+<!--    <hr/>-->
+<!--    <a href="?init_theme=True" class="btn" style="color:#ffffff; background-color:#f7b024; border-color: #f7b024;">Init Theme</a>-->
+<!--    <hr/>-->
+<!--    <a href="?purge_cache_cloudflare=True" class="btn" style="color:#ffffff; background-color:#e36d00; border-color: #e36d00;">Purge Cache CloudFlare</a>-->
+<!--    <a href="?export_learning_record=True" class="btn" style="color:#ffffff; background-color:#e36d00; border-color: #e36d00;">Export Learning Record</a>-->
+<!--    <hr/>-->
+<!--    <a href="?approval_result_report_generate=True" class="btn" style="color:#ffffff; background-color:#f03800fd; border-color: #f03800fd;">Approval Result Report - Generate</a>-->
+<!--    <hr/>-->
+<!--    <hr/>-->
+<!--    <a href="?init_budget_category=True" class="btn" style="color:#ffffff; background-color:#f115d4fd; border-color: #f115d4fd;">Budget Category - Init</a>-->
+<!--    <hr/>-->
+<!--    <a href="?public_learning_cache_delete=True" class="btn" style="color:#ffffff; background-color:#e36d00; border-color: #e36d00;">Public Learning Cache Delete</a>-->
+<!--    <hr/>-->
+<!--    <a href="?debug_sentry_error=True" class="btn" style="color:#ffffff; background-color:#e36d00; border-color: #e36d00;">Debug : Send error</a>-->
+<!--    <a href="?debug_sentry_message=True" class="btn" style="color:#ffffff; background-color:#e36d00; border-color: #e36d00;">Debug : Custom Message</a>-->
+<!--    <hr/>-->
+<!--    <a href="?update-progress-exam-section-status=True" class="btn" style="color:#ffffff; background-color:#7f3600; border-color: #e36d00;">Update Progress Exam Section Status</a>-->
+<!--    <hr/>-->
+<!--    <a href="?init_full_text_search=True" class="btn" style="color:#ffffff; background-color:#7f3600; border-color: #7f3600;">Init Full Text Search</a>-->
+<!--    <a href="?update_progress_live_datetime_complete=True" class="btn" style="color:#ffffff; background-color:#7f3600; border-color: #7f3600;">Update Progress Live Datetime Complete</a>-->
+<!--    <hr/>-->
+<!--    <br>-->
+
+{% endblock %}

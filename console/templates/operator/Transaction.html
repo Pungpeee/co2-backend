@@ -1,0 +1,209 @@
+{% load static %}
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Language" content="th" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Transaction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .header {
+            background-color: #489FDF;
+            height: 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .head-menu {
+            font-size: 18px;
+            width: 120px;
+            font-weight: 700;
+            color: white;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .head-menu:hover {
+            border-bottom: 4px solid white;
+        }
+
+        .logout {
+            position: absolute;
+            right: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 90px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .fliter-div {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .fliter-select {
+            margin-left: 8px;
+            width: 250px;
+            height: 40px;
+            padding: 8px;
+        }
+
+        .table-div {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        th {
+            background-color: #489FDF;
+            color: white;
+            height: 40px;
+        }
+
+        td {
+            height: 40px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e6f2fa;
+        }
+
+        .pagination-div {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #489FDF;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        .iconlink {
+            width: 18px;
+            height: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="header">
+        <a href="?page_type=user" class="head-menu">
+            KYC
+        </a>
+        <a href="?page_type=transaction" class="head-menu">
+            Transaction
+        </a>
+        <div class="logout">
+            <a href="#">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title">Transaction</div>
+        <div class="fliter-div">
+            <span style="font-weight: 700;">Fliter</span>
+            <select class="fliter-select" aria-placeholder="Status">
+                <option>Waiting for Payment</option>
+                <option>Waiting for approval</option>
+                <option>Approved</option>
+                <option>Rejected</option>
+                <option>Cancel</option>
+                <option>Success</option>
+                <option>Refund</option>
+            </select>
+        </div>
+        <div class="table-div">
+            <table class="table table-bordered">
+                <thead>
+                    <th style="width: 19%; text-align: center">Order No.</th>
+                    <th style="width: 19%; text-align: center">Date/Time</th>
+                    <th style="width: 19%; text-align: center">Paid By</th>
+                    <th style="width: 19%; text-align: center">Amount</th>
+                    <th style="width: 19%; text-align: center">Status</th>
+                </thead>
+                <tbody>
+                    {% for transaction in transaction_list %}
+                      <tr>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.datetime_create_str }}</td>
+                        <td>{{ transaction.paid_by }}</td>
+                        <td>{{ transaction.thb_values }}</td>
+                          {% if transaction.status == -1 %}
+                            <td>Waiting for approval</td>
+                          {% else %}
+                            <td>{{ transaction.status_label }}</td>
+                          {% endif %}
+                        <td style="background-color: white;"><a href="?page_type=transaction_details&transaction_id={{transaction.id}}"><span class="glyphicon glyphicon-edit"></span></a></td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if transaction_list.has_other_pages %}
+            <div class="pagination-div">
+                <div class="pagination">
+                    {% if transaction_list.has_previous %}
+                        <a href="?page={{ transaction_list.previous_page_number }}">&laquo;</a>
+                    {% endif %}
+
+                    {% for i in transaction_list.paginator.page_range %}
+                      {% if transaction_list.number == i %}
+                        <a href="?page={{ i }}"><b2>{{ i }}</b2></a>
+                      {% else %}
+                        <a href="?page={{ i }}">{{ i }}</a>
+                      {% endif %}
+                    {% endfor %}
+
+                    {% if transaction_list.has_next %}
+                      <a href="?page={{ transaction_list.next_page_number }}">&raquo;</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

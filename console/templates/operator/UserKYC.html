@@ -1,0 +1,230 @@
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Language" content="th" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>User KYC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .btn {
+              background-color: DodgerBlue;
+              border: none;
+              color: white;
+              padding: 12px 16px;
+              font-size: 16px;
+              cursor: pointer;
+              border-radius: 16px;
+            }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+          background-color: RoyalBlue;
+        }
+        .header {
+            background-color: #489FDF;
+            height: 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .head-menu {
+            font-size: 18px;
+            width: 120px;
+            font-weight: 700;
+            color: white;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .head-menu:hover {
+            border-bottom: 4px solid white;
+        }
+
+        .logout {
+            position: absolute;
+            right: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 90px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .fliter-div {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .fliter-select {
+            margin-left: 8px;
+            width: 250px;
+            height: 40px;
+            padding: 8px;
+        }
+
+        .table-div {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        th {
+            background-color: #489FDF;
+            color: white;
+            height: 40px;
+        }
+
+        td {
+            height: 40px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e6f2fa;
+        }
+
+        .pagination-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .pagination a.active {
+            background-color: #489FDF;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        .iconlink {
+            width: 18px;
+            height: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <body>
+        <div class="header">
+            <a href="?page_type=user" class="head-menu">
+            KYC
+            </a>
+            <div class="logout">
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        <form action="" method="get">
+            <div class="container">
+                <label for="filter_value">Filter:</label>
+                <select name="filter_value" id="filter_value">
+                    <option value="">-</option>
+                    <option value="-2">Reject</option>
+                    <option value="-1">No Process</option>
+                    <option value="1">Not Verify</option>
+                    <option value="2">In Review</option>
+                    <option value="3">Approved</option>
+                </select>
+                <br><br>
+                <label for="search">Search:</label>
+                <input type="search" id="search" name="search">
+                <input type="submit">
+            </div>
+        </form>
+        <div class="container">
+            <div class="title">User</div>
+            <div class="table-div">
+                <table class="table table-bordered">
+                    <thead>
+                        <th style="width: 5%">#No</th>
+                        <th style="width: 20%">Email</th>
+                        <th style="width: 20%">First Name</th>
+                        <th style="width: 20%">Last Name</th>
+                        <th style="width: 20%">Phone</th>
+                        <th style="width: 15%">KYC Status</th>
+                    </thead>
+                    <tbody>
+                        {% for account in account_list %}
+                          <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ account.account.email }}</td>
+                            <td>{{ account.account.first_name }}</td>
+                            <td>{{ account.account.last_name }}</td>
+                            <td>{{ account.account.phone }}</td>
+                            <td>{{ account.kyc_status_display }}</td>
+                            <td style="background-color: white;"><a href="?page_type=user_details&account_id={{account.id}}"><span class="glyphicon glyphicon-edit"></span></a></td>
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if account_list.has_other_pages %}
+                <div class="pagination-div">
+                    <div class="pagination">
+                        {% if account_list.has_previous %}
+                            <a href="?page={{ account_list.previous_page_number }}">&laquo;</a>
+                        {% endif %}
+
+                        {% for i in account_list.paginator.page_range %}
+                          {% if account_list.number == i %}
+                            <a href="?page={{ i }}"><b2>{{ i }}</b2></a>
+                          {% else %}
+                            <a href="?page={{ i }}">{{ i }}</a>
+                          {% endif %}
+                        {% endfor %}
+
+                        {% if account_list.has_next %}
+                          <a href="?page={{ account_list.next_page_number }}">&raquo;</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </body>
+{% endblock %}
+
+</html>

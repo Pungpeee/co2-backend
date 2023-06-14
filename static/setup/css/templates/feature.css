@@ -1,0 +1,73 @@
+
+#feature .sorting-column {
+  width: 50%;
+  display: inline-block;
+}
+
+.sorting {
+  display: flex;
+  flex-flow: wrap;
+}
+
+.sorting-items {
+  flex-basis: 50%;
+}
+
+.sorting-items:nth-child(odd) {
+  border-right: 1px solid lightgray;
+  padding-right: 20px;
+}
+
+.sorting-items:nth-child(even) {
+  padding-left: 20px;
+}
+
+.sorting-items:nth-child(n + 3) {
+  padding-top: 40px;
+}
+
+.sorting-items .general-sorting .item-info {
+  transition-duration: 0.5s;
+}
+
+.sorting-items .general-sorting .item .material-icons:hover {
+  color: black;
+}
+
+.sorting-items .general-sorting.pending .item-info {
+  color: #FFB330;
+}
+.sorting-items .general-sorting.success .item-info {
+  color: #7CB342;
+}
+
+@media screen and (max-width: 768px) {
+  #feature {
+    padding-top: 20px !important;
+  }
+
+  #feature .sorting-column {
+    width: 100%;
+    display: block;
+  }
+   #feature .sorting-column h6{
+    padding: 0 !important;
+   }
+   #feature .sorting-column:last-child div {
+     border: none !important;
+   }
+
+  .sorting-items {
+    flex-basis: 100%;
+    padding-top: 40px;
+  }
+
+  .sorting-items:nth-child(odd) {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .sorting-items:nth-child(even) {
+    padding-left: 0;
+  }
+}

@@ -1,0 +1,323 @@
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Language" content="th" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Transaction Detail</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .header {
+            background-color: #489FDF;
+            height: 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .head-menu {
+            font-size: 18px;
+            width: 120px;
+            font-weight: 700;
+            color: white;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .head-menu:hover {
+            border-bottom: 4px solid white;
+        }
+
+        .logout {
+            position: absolute;
+            right: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 90px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .table-div {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+        }
+
+        th {
+            background-color: #489FDF;
+            color: white;
+            height: 40px;
+        }
+
+        td {
+            height: 40px;
+            background-color: #F8F8F8;
+        }
+
+        .info-title {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .info-div {
+            margin-top: 30px;
+            display: flex;
+            justify-content: start;
+        }
+
+        .info-name {
+            width: 200px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .info-value {
+            font-size: 16px;
+        }
+
+        .slip-img {
+            width: 180px;
+            height: auto;
+        }
+
+        .reason-div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .reason-select {
+            width: 400px;
+            height: 40px;
+            padding: 8px;
+        }
+
+        .button-div {
+            text-align: right;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .userbtn {
+            width: 250px;
+            height: 40px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+
+        .approve {
+            background-color: #489FDF;
+            color: white;
+        }
+
+        .approve:hover {
+            opacity: 0.8;
+        }
+
+        .reject {
+            background-color: #D1D1D6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 200px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            margin: auto;
+            background-color: white;
+            text-align: center;
+            width: 600px;
+            height: auto;
+            font-weight: 500;
+            font-size: 20px;
+            padding: 50px 50px;
+        }
+
+        .close-modal {
+            margin-top: 40px;
+            width: 200px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 20px;
+            color: white;
+            background-color: #489FDF;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="header">
+        <a href="?page_type=user" class="head-menu">
+            KYC
+        </a>
+        <a href="?page_type=transaction" class="head-menu">
+            Transaction
+        </a>
+        <div class="logout">
+            <a href="#">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title">Transaction</div>
+        <div class="table-div">
+            <table>
+                <tr>
+                    <th style="width: 20%; text-align: center">Order No.</th>
+                    <th style="width: 20%; text-align: center">Date/Time</th>
+                    <th style="width: 20%; text-align: center">Paid By</th>
+                    <th style="width: 20%; text-align: center">Amount(THB)</th>
+                    <th style="width: 20%; text-align: center">Status</th>
+                </tr>
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.datetime_create_str }}</td>
+                    <td>{{ transaction.paid_by }}</td>
+                    <td>{{ transaction.thb_values }}</td>
+                    {% if transaction.status == -1 %}
+                        <td>Waiting for approval</td>
+                    {% else %}
+                    <td>{{ transaction.status_label }}</td>
+                    {% endif %}
+                </tr>
+            </table>
+        </div>
+        <div class="info-title">Payment Information</div>
+        <div class="info-div">
+            <div class="info-name">Date time</div>
+            {% if not payment.datetime_stamp_str %}
+                <div class="info-value">{{ payment.datetime_stamp_str }}</div>
+            {% else %}
+                <div class="info-value">-</div>
+            {% endif %}
+        </div>
+        <div class="info-div">
+            <div class="info-name">Receipt</div>
+            <div class="info-value"><img src="/backend/media/{{ payment.payment_slip }}" class="slip-img" /></div>
+        </div>
+        <div class="reason-div">
+            <div class="info-div">
+                <div class="info-name">Reason</div>
+                <div class="info-value">
+                    <select id="reason" onchange="checkReason()" class="reason-select" aria-placeholder="Please select reason">
+                        <option value="99" selected>-</option>
+                        <option value="1">Approve with all evident</option>
+                        <option value="2">Mismatching Account Information</option>
+                        <option value="3">Incorrect Amount</option>
+                        <option value="4">Incorrect Receipt</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button-div">
+                {% if transaction.status == -1%}
+                    <div>
+                        <div><button id="approveBtn" class="userbtn approve" disabled>Approve</button></div>
+                        <div><button id="rejectBtn" class="userbtn rejected" disabled>Reject</button></div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div id="emailModal" class="modal">
+            <div class="modal-content">
+                Email already sent to customer
+                <div>
+                    <button id="close-modal" class="close-modal">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+ <script>
+        var modal = document.getElementById("emailModal");
+        var approveBtn = document.getElementById("approveBtn");
+        var rejectBtn = document.getElementById("rejectBtn");
+        var close = document.getElementById("close-modal");
+        var url = "?page_type={{ page_type }}&transaction_id={{ transaction.id }}"
+        const button = document.querySelector('button');
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            else if(event.target == approveBtn) {
+                approveBtn.disabled = true
+                rejectBtn.disabled = true
+                window.location = url+'&is_approve=1&reason_type='+document.getElementById("reason").value;
+            }
+            else if(event.target == rejectBtn) {
+                approveBtn.disabled = true
+                rejectBtn.disabled = true
+                window.location = url+'&is_reject=1&reason_type='+document.getElementById("reason").value;
+            }
+        }
+
+        /*ไว้เช็ค reason สำหรับกดปุ่ม approve หรือ rejected*/
+        function checkReason(){
+            var selected = document.getElementById("reason").value;
+            if(selected == 99){
+                approveBtn.disabled = true;
+                approveBtn.style.cursor = "not-allowed";
+                rejectBtn.disabled = true;
+                rejectBtn.style.cursor = "not-allowed";
+            }
+
+            else if(selected == 2 || selected == 3 || selected == 4 ){
+                approveBtn.disabled = true;
+                approveBtn.style.cursor = "not-allowed";
+                rejectBtn.disabled = false;
+                rejectBtn.style.cursor = "pointer";
+            }
+            else if (selected == 1){
+                approveBtn.disabled = false;
+                approveBtn.style.cursor = "pointer";
+                rejectBtn.disabled = true;
+                rejectBtn.style.cursor = "not-allowed";
+            }
+        }
+
+    </script>
+{% endblock %}

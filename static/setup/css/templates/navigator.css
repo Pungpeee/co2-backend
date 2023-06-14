@@ -1,0 +1,193 @@
+/* ========= Header ============= */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  padding: 0 520px 0 250px;
+  z-index: 15;
+}
+#header > ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  height: 100%;
+}
+#header > ul.pull-right {
+  right: 0;
+  left: auto;
+  width: auto;
+}
+#header > ul.pull-right .search-icon.open {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  z-index: 10;
+}
+#header ul li {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+}
+#header ul li a, #header ul li div.pointer {
+  display: block;
+  height: 100%;
+  line-height: 65px;
+  padding: 0 20px;
+  text-align: center;
+  float: left;
+  color: white;
+}
+#header ul li.logo {
+  position: relative;
+  width: 160px;
+}
+#header ul li.logo a#logo {
+  display: inline-block;
+  height: 40px;
+  width: 100%;
+  background-image: url("../../../default/logo-white.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+#header ul li.show-background {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+#header ul li.hide-background {
+  background-color: inherit;
+}
+#header ul li.notification .noti-badge {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+}
+#header ul li.notification .noti-badge .material-icons {
+  font-size: 13px;
+  text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+}
+#header ul li.profile div.pointer {
+  line-height: 57px;
+}
+#header ul li.profile .name {
+  display: inline-block;
+  margin-left: 10px;
+  padding-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 18px;
+  text-align: left;
+}
+#header .account-image {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center !important;
+  display: inline-block;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+#header .el-popover i {
+  line-height: 40px;
+}
+.el-popover {
+  padding: 12px 0px
+}
+div.account-menu {
+  padding: 0px 12px;
+}
+div.account-menu:hover {
+  background-color: #f8f8f8;
+}
+div.account-menu i {
+  margin-right: 5px;
+  line-height: 40px;
+}
+div.account-menu div {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 40px;
+  font-size: 16px;
+}
+
+/* ================ Left Menu =================== */
+.browse-menu {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  top: 50px;
+  width: 64px;
+}
+.browse-menu:not(.el-menu--collapse) {
+  width: 250px;
+}
+.browse-menu.el-menu--collapse  {
+
+}
+.browse-menu .el-menu-item-group__title {
+  padding: 0px;
+}
+.browse-menu .el-menu-item {
+  font-size: 16px;
+  padding: 0px !important;
+}
+.browse-menu .el-menu-item:hover {
+  background-color: transparent;
+}
+.browse-menu .el-menu-item a {
+  padding-left: 15px;
+  width: inherit;
+  display: block;
+  border-left: 5px solid #FFF;
+}
+.browse-menu .el-menu-item i {
+  color: inherit;
+}
+.browse-menu .menu-name.is-hidden {
+  display: none;
+}
+
+/* .browse-menu .el-menu-item.is-active {
+  color: #FF5840 !important;
+  border-left: 5px solid #FF5840 !important;
+  background-color: #FFF5F4;
+}
+
+.browse-menu .el-menu-item:focus {
+  background-color: #FFF5F4;
+} */
+
+.browse-menu .el-menu-item a.nuxt-link:hover {
+  border-left: 5px solid transparent;
+}
+
+/* ====== hide django button ======= */
+.djdt-hidden {
+  display: none !important;
+}
+
+/* mobile size */
+@media screen and (max-width: 768px) {
+  /* header */
+  #header {
+    padding-right: 0;
+  }
+  #header ul li div.pointer {
+    padding: 0 10px;
+  }
+  #header ul li.profile span.name, #header ul li.profile i {
+    display: none;
+  }
+
+  /* left-menu */
+  .browse-menu {
+    width: 0px;
+  }
+  .browse-menu.el-menu--collapse .el-menu-item {
+    display: none;
+  }
+}

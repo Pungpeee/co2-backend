@@ -1,0 +1,38 @@
+{% extends "console/base.html" %}
+
+{% block content %}
+<form class="form-inline" action="" method="post">{% csrf_token %}
+  <label class="sr-only" for="account">Account</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <div class="input-group-addon">@</div>
+    <input type="text" class="form-control" id="account" placeholder="Account" name="account" value="{{ account.email }}">
+  </div>
+
+  <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+    <label class="mr-sm-2" for="content-type">Content Type</label>
+    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="content-type" name="content_type">
+      <option value="{{ content_type_event.id }}">Event</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">CodeName</th>
+    <th scope="col">Permission</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for user_object_permission in user_object_permission_list %}
+  <tr>
+    <th scope="row">{{ user_object_permission.id }}</th>
+    <td>{{ user_object_permission.permission.codename }}</td>
+    <td>{{ user_object_permission.permission }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

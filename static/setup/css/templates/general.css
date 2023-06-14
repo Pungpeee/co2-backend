@@ -1,0 +1,6 @@
+/* mobile size */
+@media screen and (max-width: 768px) {
+  #general {
+    padding-top: 20px !important;
+  }
+}

@@ -1,0 +1,32 @@
+{% extends "console/base.html" %}
+
+{% block content %}
+
+    <h1>Cache list</h1>
+    <table class="table table-hover table-sm">
+        <a href="{% url 'console:cache-delete-all' %}" class="btn btn-danger btn-sm" role="button"
+           onclick="return confirm('Are you sure to delete all cache?')">Delete All</a>
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Key</th>
+            <th scope="col text-center">Size (Byte)</th>
+            <th scope="col">Time (Second)</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cache in key_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'console:cache-key' cache.key %}">{{ cache.key }}</a></td>
+                <td>{{ cache.size }}</td>
+                <td>{{ cache.time }}</td>
+                <td><a href="{% url 'console:cache-delete' %}?key={{ cache.key }}"
+                       class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

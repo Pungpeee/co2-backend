@@ -1,0 +1,39 @@
+FROM python:3.7.2-stretch
+
+# ref: https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#run
+RUN apt-get update && apt-get install -y \
+  apt-utils \
+  libssl-dev \
+  libffi-dev \
+  libsasl2-dev \
+  libldap2-dev \
+  python-ldap \
+  libxmlsec1-dev \
+  libmemcached-dev \
+  iputils-ping \
+  cifs-utils \
+  default-libmysqlclient-dev \
+  libxml2-dev \
+  libldap-dev \
+  ldap-utils \
+  gnupg \
+  rsync \
+  libav-tools
+
+
+
+# Handbrake
+ADD ./_docker/sources.list /etc/apt/sources.list
+ADD ./_docker/preferences /etc/apt/preferences
+RUN apt-get -y update && apt-get install -y xvfb -o APT::Immediate-Configure=0 --allow-unauthenticated
+
+ADD ./requirements.txt /code/requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r /code/requirements.txt
+
+ADD . /code/
+WORKDIR /code/
+COPY ./_docker/local_settings_k8s.py /code/conicle/local_settings.py
+
+ENTRYPOINT ["celery"]
+CMD ["-A", "conicle", "worker", "-l", "info", "-E", "-c", "2", "--autoscale=5,0"]

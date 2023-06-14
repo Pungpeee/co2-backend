@@ -1,0 +1,60 @@
+{% block body %}
+    <meta http-equiv="Content-Language" content="th"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <div style="width: 100%;">
+        <div style="width: 20%; display: inline-block"></div>
+        <div style="width: 60%; display: inline-block">
+            <img style="border-radius: 4px 4px 0 0; height: 80px; object-fit: contain;" src="{{ header_image }}">
+        </div>
+        <div style="width: 20%; display: inline-block"></div>
+    </div>
+    <div style="width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; background-color: white; box-shadow: 0 3px 6px rgba(0,0,0,0.23); text-align: center;">
+        <div style="padding: 30px 20px;">
+            <div style="text-align: center">
+                <img style="border-radius: 4px 4px 0 0; width: 100px; height: 100px; max-width: 600px;"
+                     src="{{ mail_icon }}">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <div style="font-size: 20px; font-weight: bold;">Verify your email address</div>
+                <div style="font-size: 20px; font-weight: bold;">กรุณายืนยันที่อยู่อีเมลของคุณ</div>
+                <br>
+                <hr>
+                <div style="font-size: 16px; margin-top: 20px; font-weight: 300px;">
+                    In order to start using your Carbon Wallet account, you need to confirm your email address.
+                    <br>
+                    ก่อนที่จะเริ่มใช้งานบัญชี Carbon Wallet ของคุณ คุณต้องยืนยันที่อยู่อีเมล์ของคุณ
+                </div>
+                <br>
+            </div>
+            <a style="background-color:#1FA37C; padding:12px 27px; color:#ffffff; text-decoration:none; border-radius: 20px;"
+               href={{ link }} target="_blank">Verify Email Address
+            </a>
+            <br><br> <br>
+            If you have problem with your button, Please copy link below to your browser. <br>
+            หากคุณไม่สามารถคลิกปุ่มข้างบนได้ กรุณาคัดลอกลิ้งด้านล่างนี้ไปยังเว็บบราว์เซอร์ของคุณ. <br><br>
+            {{ link }}
+            <br><br>
+            <hr>
+            <br><br>
+            If you did not sign up for this account you can ignore this email and the account will be deleted.
+            <br>
+            หากคุณไม่ได้เป็นผู้ทำการสมัครบัญชีนี้ คุณสามารถเพิกเฉยต่ออีเมล์ฉบับนี้ และบัญชีผู้ใช้งานนี้จะถูกลบ
+            <br><br>
+            <hr>
+            <br><br>
+            <div>
+                For more information please contact us at <br> <span
+                    style="color: #4678D8;">support@carbonwallet.com</span> or Tel. <span
+                    style="color: #4678D8;">(+66)2-714-2490</span>
+            </div>
+            <br><br>
+            Please do not reply to this message, This email was sent from a notification-only
+            email address that can't accept any incoming email, Please contact customer support by using the
+            provided
+            method.
+            <br>
+            หากคุณตอบกลับอีเมลนี้ เราจะไม่ได้รับข้อความของคุณ เนื่องจากอีเมลนี้เป็นระบบส่งการแจ้งเตือนเท่านั้น
+            โปรดติดต่อฝ่ายบริการลูกค้าตามช่องทางที่เราจัดไว้ให้.
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,205 @@
+variables:
+  PROJECT_NAME: '${CI_PROJECT_NAME}'
+  BRANCH: '${CI_COMMIT_REF_NAME}'
+  COMMIT_ID: '${CI_COMMIT_SHA}'
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$project-name
+
+before_script:
+  - echo "$PROJECT_NAME $BRANCH $COMMIT_ID"
+  - export git_Build_id=$(echo $COMMIT_ID | cut -c1-8)
+  - export build_time=$(date +"%D %T")
+
+stages:
+  - dev-build
+  - dev-deploy
+  - staging-scg-build
+  - staging-scg-deploy
+  - uat-build
+  - uat-deploy
+  - prod-build
+  - prod-deploy
+
+# -------------------------------- DEV --------------------------------
+
+dev-build:
+  stage: dev-build
+  only:
+    - dev
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: development
+    url: https://co2-api-dev.vekin.co.th
+  variables:
+    git_Build_id: $(echo $git_Build_id)
+  script:
+    - echo "{\"build\":\"$build_time\",\"repo\":\"$PROJECT_NAME\",\"branch\":\"$BRANCH\",\"commit_id\":\"$git_Build_id\"}" >> ${PWD}/build.json
+    - docker build -f deployment/Dockerfile.dev
+      -t vekin/gr-co2-api-dev:$git_Build_id .
+    - docker image rm -f vekin/gr-co2-api-dev:$git_Build_id
+    - docker image rm -f vekin/gr-co2-api-dev:latest
+    - docker build -f deployment/Dockerfile.dev
+      -t vekin/gr-co2-api-dev:latest .
+
+dev-deploy:
+  stage: dev-deploy
+  only:
+    - dev
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: development
+    url: https://co2-api-dev.vekin.co.th
+  script:
+    - docker stop gr-co2-api-dev
+    - docker rm gr-co2-api-dev
+    - docker run -d --restart=always -p 5011:8000
+      --env-file $ENV_FILE
+      --name gr-co2-api-dev
+      -v /mnt/co2-api/dev/static/:/src/static/
+      -v /mnt/co2-api/dev/default/:/src/default/
+      -v /mnt/co2-api/dev/media/:/src/media/
+      vekin/gr-co2-api-dev:latest
+
+# -------------------------------- staging-scg --------------------------------
+
+staging-scg-build:
+  stage: staging-scg-build
+  only:
+    - staging-scg
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: staging-scg
+    url: https://co2-api-staging-scg.vekin.co.th
+  variables:
+    git_Build_id: $(echo $git_Build_id)
+  script:
+    - echo "{\"build\":\"$build_time\",\"repo\":\"$PROJECT_NAME\",\"branch\":\"$BRANCH\",\"commit_id\":\"$git_Build_id\"}" >> ${PWD}/build.json
+    - docker build -f deployment/Dockerfile.dev
+      -t vekin/gr-co2-api-staging-scg:$git_Build_id .
+    - docker image rm -f vekin/gr-co2-api-staging-scg:$git_Build_id
+    - docker image rm -f vekin/gr-co2-api-staging-scg:latest
+    - docker build -f deployment/Dockerfile.dev
+      -t vekin/gr-co2-api-staging-scg:latest .
+
+staging-scg-deploy:
+  stage: staging-scg-deploy
+  only:
+    - staging-scg
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: staging-scg
+    url: https://co2-api-staging-scg.vekin.co.th
+  script:
+    - docker stop gr-co2-api-staging-scg
+    - docker rm gr-co2-api-staging-scg
+    - docker run -d --restart=always -p 5013:8000
+      --env-file $ENV_FILE
+      --name gr-co2-api-staging-scg
+      -v /mnt/co2-api/staging-scg/static/:/src/static/
+      -v /mnt/co2-api/staging-scg/default/:/src/default/
+      -v /mnt/co2-api/staging-scg/media/:/src/media/
+      vekin/gr-co2-api-staging-scg:latest
+
+# -------------------------------- UAT --------------------------------
+
+uat-build:
+  stage: uat-build
+  only:
+    - uat
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: uat
+    url: https://co2-api-uat.vekin.co.th
+  variables:
+    git_Build_id: $(echo $git_Build_id)
+  script:
+    - echo "{\"build\":\"$build_time\",\"repo\":\"$PROJECT_NAME\",\"branch\":\"$BRANCH\",\"commit_id\":\"$git_Build_id\"}" >> ${PWD}/build.json
+    - docker build -f deployment/Dockerfile
+      -t vekin/gr-co2-api-uat:$git_Build_id .
+    - docker image rm -f vekin/gr-co2-api-uat:$git_Build_id
+    - docker image rm -f vekin/gr-co2-api-uat:latest
+    - docker build -f deployment/Dockerfile
+      -t vekin/gr-co2-api-uat:latest .
+
+uat-deploy:
+  stage: uat-deploy
+  only:
+    - uat
+  tags:
+    - vekin
+    - central
+    - uat
+  environment:
+    name: uat
+    url: https://co2-api-uat.vekin.co.th
+  script:
+    - docker stop gr-co2-api-uat
+    - docker rm gr-co2-api-uat
+    - docker run -d --restart=always -p 5012:8000
+      --env-file $ENV_FILE
+      --name gr-co2-api-uat
+      -v /mnt/co2-api/uat/static/:/src/static/
+      -v /mnt/co2-api/uat/default/:/src/default/
+      -v /mnt/co2-api/uat/media/:/src/media/
+      vekin/gr-co2-api-uat:latest
+# -------------------------------- PROD --------------------------------
+
+prod-build:
+  stage: prod-build
+  only:
+    - master
+  tags:
+    - co2
+    - backend
+    - api
+    - prod
+  environment:
+    name: production
+    url: https://api.carbon.in.th
+  variables:
+    git_Build_id: $(echo $git_Build_id)
+  script:
+    - echo "{\"build\":\"$build_time\",\"repo\":\"$PROJECT_NAME\",\"branch\":\"$BRANCH\",\"commit_id\":\"$git_Build_id\"}" >> ${PWD}/build.json
+    - docker build -f deployment/Dockerfile
+      -t vekin/gr-co2-api-prod:$git_Build_id .
+    - docker image rm -f vekin/gr-co2-api-prod:$git_Build_id
+    - docker image rm -f vekin/gr-co2-api-prod:latest
+    - docker build -f deployment/Dockerfile
+      -t vekin/gr-co2-api-prod:latest .
+
+prod-deploy:
+  stage: prod-deploy
+  only:
+    - master
+  tags:
+    - co2
+    - backend
+    - api
+    - prod
+  environment:
+    name: production
+    url: https://api.carbon.in.th
+  script:
+    - docker stop gr-co2-api-prod
+    - docker rm gr-co2-api-prod
+    - docker run -d --restart=always -p 9001:8000
+      --env-file $ENV_FILE
+      --name gr-co2-api-prod
+      -v /mnt/co2-api/prod/static/:/src/static/
+      -v /mnt/co2-api/prod/default/:/src/default/
+      -v /mnt/co2-api/prod/media/:/src/media/
+      vekin/gr-co2-api-prod:latest

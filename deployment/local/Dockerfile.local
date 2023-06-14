@@ -1,0 +1,33 @@
+FROM python:3.8.10-buster
+
+# Environment variables
+ARG API_KEY
+ENV API_KEY=$API_KEY
+
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+
+RUN apt-get install -y \
+    python3-pip python3-dev python3-setuptools \
+    --no-install-recommends
+
+RUN apt-get update && apt-get install gettext nano vim -y
+
+RUN pip3 install --upgrade pip
+RUN apt-get install -y cron
+
+RUN mkdir $pwd/src
+ADD . $pwd/src/
+WORKDIR $pwd/src/
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+RUN echo "Asia/Bangkok" > /etc/timezone && rm /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+RUN python manage.py collectstatic
+COPY deployment/local/start_local.sh $pwd/start_local.sh
+RUN chmod +x $pwd/start_local.sh
+CMD $pwd/start_local.sh
