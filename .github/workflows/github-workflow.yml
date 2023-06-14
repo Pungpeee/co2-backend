@@ -1,17 +1,9 @@
-name: Build and deploy a container to an Azure Web App
-
-env:
-  AZURE_WEBAPP_NAME: vekin-cero-api-prod # set this to the name of your Azure Web App
-  SLOT_NAME: staging
+name: Build and deploy a container to an VM by acr
 
 on:
   push:
-    branches: ["master"]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
+    branches: 
+       - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,44 +11,46 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Log in to Azure container registry
-        uses: docker/login-action@v1.10.0
+      - name: Azure Container Registry Login
+        uses: azure/docker-login@v1
         with:
-          registry: ${{ secrets.ACR_URL_PROD }}
-          username: ${{ secrets.ACR_USERNAME_PROD }}
-          password: ${{ secrets.ACR_PASSWORD_PROD }}
-
-      - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
-      - name: Build and push container image to registry
+          login-server: vekawspocregistry.azurecr.io # default: index.docker.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          
+          
+      - name: Build and Push docker image to ACR
         uses: docker/build-push-action@v2
         with:
+          context: .
           push: true
-          tags: ${{ secrets.ACR_URL_PROD }}/${{ env.REPO }}:${{ github.sha }}
-          file: ./deployment/Dockerfile
-
+          build-args: |
+             "ENV_FILE: ${{ vars.ENV_FILE }}"
+          tags: vekawspocregistry.azurecr.io/co2-backend:latest
+          file: ./deployment/Dockerfile.dev
+          
+    
   deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: "master"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
 
-    steps:
-      - name: Lowercase the repo name and username
-        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: Azure Container Registry Login
+        uses: azure/docker-login@v1
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_STAGING }}
-          images: ${{ secrets.ACR_URL_PROD }}/${{ env.REPO }}:${{ github.sha }}
-          slot-name: ${{ env.SLOT_NAME }}
+          login-server: vekawspocregistry.azurecr.io # default: index.docker.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Deploy execute command ssh to remote server
+        env:
+           IMAGE_NAME: vekawspocregistry.azurecr.io/poc-ml:latest
+        uses: appleboy/ssh-action@master
+        with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         script: |
+              docker pull -f ./deployment/Dockerfile.dev -t vekawspocregistry.azurecr.io/co2-backend:latest
+              docker run -d vekawspocregistry.azurecr.io/co2-backend:latest
+              docker ps -a
